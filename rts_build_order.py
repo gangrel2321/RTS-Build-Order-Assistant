@@ -47,8 +47,19 @@ class MainWindow(QMainWindow):
             actionsList = actionsList[:-1]
         actionsList = list(map(lambda x: x.split(","), actionsList))
         actionsList=  [[str(x[0]),str(x[1])] for x in actionsList]
+        if config['Default']['time_is_gametime'] == 'False':
+            actionsList = [ [x[0], self.transformTime(x[1])] for x in actionsList]
         return actionsList
     
+    #transform game-time to real-time
+    def transformTime(self, timeVal):
+        minutes, seconds = timeVal.split(":")
+        totalSecs = int(seconds) + int(minutes)*60
+        totalSecs = totalSecs // float(config['Default']['gametime_multi'])
+        transMins = int(totalSecs // 60)
+        transSecs = int(totalSecs - transMins*60)
+        return str(transMins) + ":" + ("%02d" % transSecs)  
+
     def updateTime(self):
         if len(self.buildData) < 1:
             return
@@ -83,7 +94,7 @@ class MainWindow(QMainWindow):
 config = configparser.ConfigParser()
 config.read('config.ini')
 keyboard.wait(config['Default']['init_command'])
-startTime = time.time() - 0.5
+startTime = time.time() - 0.5 #buffer for time to hit keystroke
 app = QApplication(sys.argv)
 app.setWindowIcon(QIcon('icon_rts.ico'))
 window = MainWindow()
