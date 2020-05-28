@@ -1,11 +1,10 @@
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QDesktopWidget
+from PyQt5.QtCore import Qt, QTimer
 from datetime import timedelta
-import keyboard
-import sys
-import time
-import configparser
+from keyboard import wait
+from time import time
+from configparser import ConfigParser
 
 class MainWindow(QMainWindow):
     
@@ -22,7 +21,7 @@ class MainWindow(QMainWindow):
         self.label = QLabel(text=self.buildData[self.buildProg][0])
         self.label.setWordWrap(True)
         self.label.setAlignment(Qt.AlignCenter)
-        self.label.setStyleSheet("background-color: rgba" + config['Default']['app_color'] + "; color : white; font-size: 14px;") 
+        self.label.setStyleSheet("background-color: rgba" + config['Default']['app_color'] + "; color : white; font-size: %spx;" % config["Default"]["font_size_small"]) 
         self.label.setFixedWidth(label_dims[0])
         self.label.setMinimumSize(label_dims[0], label_dims[1])
         ag = QDesktopWidget().availableGeometry()
@@ -65,37 +64,37 @@ class MainWindow(QMainWindow):
             return
         if self.buildProg >= self.buildMax:
             return
-        elapsedTime = (time.time() - startTime)
+        elapsedTime = (time() - startTime)
         hours, rem = divmod(elapsedTime, 3600)
         minutes, seconds = divmod(rem, 60)
         seconds = int(seconds)
         startTextRaw = "{:d}:{:02d}".format(int(minutes),seconds)
+        large_font = config["Default"]["font_size_large"]
         startText = "<html>Time: " + startTextRaw + " / " + self.buildData[self.buildProg][1] + "<br/><br/></html>" 
         if startTextRaw == self.buildData[self.buildProg][1] or "0"+ startTextRaw == self.buildData[self.buildProg][1]:
             self.buildProg += 1
         else:
             if self.buildProg + 1 < self.buildMax and self.buildProg > 0:
-                self.label.setText(startText + "<html>"+self.buildData[self.buildProg - 1][0] + "<br/></html>" + '<html><b><p style="font-size:16px">'+self.buildData[self.buildProg][0] + \
+                self.label.setText(startText + "<html>"+self.buildData[self.buildProg - 1][0] + "<br/></html>" + ('<html><b><p style="font-size:%spx">' % large_font) + self.buildData[self.buildProg][0] + \
                 "</p><br/></b></html>" + "<html>"+self.buildData[self.buildProg + 1][0] + "</html>")
             elif self.buildProg + 1 < self.buildMax:
-                self.label.setText(startText + '<html><b><p style="font-size:16px">' +self.buildData[self.buildProg][0] + \
+                self.label.setText(startText + ('<html><b><p style="font-size:%sx">' % large_font) +self.buildData[self.buildProg][0] + \
                 "</p><br/></b></html>" + "<html>"+self.buildData[self.buildProg + 1][0] + "</html>")
             elif self.buildProg > 0:
-                self.label.setText(startText + "<html>"+self.buildData[self.buildProg - 1][0] + '<br/></html><p style="font-size:16px">' + "<html><b>"+self.buildData[self.buildProg][0] + \
+                self.label.setText(startText + "<html>"+self.buildData[self.buildProg - 1][0] + ('<br/></html><p style="font-size:%spx">' % large_font) + "<html><b>"+self.buildData[self.buildProg][0] + \
                 "</p></b></html>")
             else:
                 self.label.setText(startText + "<html><b>"+self.buildData[self.buildProg][0] + \
                 "</b></html>")
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.RightButton:
-            self.close()
+    def mouseDoubleClickEvent(self, event):
+        self.close()
 
-config = configparser.ConfigParser()
+config = ConfigParser()
 config.read('config.ini')
-keyboard.wait(config['Default']['init_command'])
-startTime = time.time() - 0.5 #buffer for time to hit keystroke
-app = QApplication(sys.argv)
+wait(config['Default']['init_command'])
+startTime = time() - 0.5 #buffer for time to hit keystroke
+app = QApplication([])
 app.setWindowIcon(QIcon('icon_rts.ico'))
 window = MainWindow()
 window.setWindowIcon(QIcon('icon_rts.ico'))
