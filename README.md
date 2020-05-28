@@ -3,7 +3,7 @@
 2. Run rts_build_order.exe
 3. Launch game
 4. Use launch keystroke when ready (default is ctrl+1)
-5. The app can be closed by simply right-clicking on the window.
+5. The app can be closed by simply double-clicking on the window.
 
 ## How to Add Build Order:
 1. Create a spreadsheet (.csv file) with top row: Note,Time
