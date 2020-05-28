@@ -9,3 +9,4 @@ How to Add Build Order:
 2. Add notes and times for them to occur in the following rows
 3. Format time as minute:second (e.g. 1:24, 0:03)
  
+The app can be closed by simply right-clicking on the window.
