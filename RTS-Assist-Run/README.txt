@@ -13,13 +13,3 @@
 5. Set build_order_path in the config to the filename 
 
 Note: the time you enter can be real-time or game-time simply edit the config to reflect this
-
-
-## Example Spreadsheet:
-
-![alt text](https://github.com/gangrel2321/RTS-Build-Order-Assistant/blob/master/excel_example.PNG "AoE2 Scrush Spreadsheet")
-
-
-## AoE2 Scout Rush Example:
-
-![alt text](https://github.com/gangrel2321/RTS-Build-Order-Assistant/blob/master/Capture.PNG "AoE2 Scrush Example")
