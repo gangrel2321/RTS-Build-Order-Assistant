@@ -1,5 +1,5 @@
 ## How to Run:
-1. Download all the files and place them in the same folder
+1. Download all the files in the RTS-Assist-Run folder and place them in the same folder
 2. Run rts_build_order.exe
 3. Launch game
 4. Use launch keystroke when ready (default is ctrl+1)
